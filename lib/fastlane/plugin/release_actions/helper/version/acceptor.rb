@@ -39,8 +39,8 @@ class Version
   # terminates in a non-accepting state, the string is not valid. A simplified diagram
   # of the state machine can be found in this repo in
   # `docs/version-acceptor-dfa.{png,svg}` (drawn using http://madebyevan.com/fsm/).
-  # While there's some complexity in maintaining the table of edges, it provides O(N)
-  # runtime and significant maintainability benefits over regular expressions.
+  # While there's some complexity in maintaining the table of edges, it provides O(n)
+  # runtime performance and has a maintainability edge over regular expressions.
   #
   # Acceptor is compliant with Semantic Versioning 2.0.0. For more details on the
   # specification, see: https://semver.org/.
