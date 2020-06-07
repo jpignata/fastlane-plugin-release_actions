@@ -47,11 +47,11 @@ class Version
   #
   # ==== Examples
   #
-  #   Version::Acceptor.new('1.0.0').valid?             # => true
-  #   Version::Acceptor.new('1.0.0-unstable.0').valid?  # => true
-  #   Version::Acceptor.new('1.0-alpha+234')            # => true
-  #   Version::Acceptor.new('1.0.PRO).valid?            # => false
-  #   Version::Acceptor.new('tetris').valid?            # => false
+  #   Version::Acceptor.new('1.0.0').valid?            # => true
+  #   Version::Acceptor.new('1.0.0-unstable.0').valid? # => true
+  #   Version::Acceptor.new('1.0-alpha+234')           # => true
+  #   Version::Acceptor.new('1.0.PRO).valid?           # => false
+  #   Version::Acceptor.new('tetris').valid?           # => false
   class Acceptor
     STATES = {
       start: {
