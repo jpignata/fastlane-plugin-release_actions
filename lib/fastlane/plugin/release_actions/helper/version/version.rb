@@ -1,11 +1,19 @@
 require 'helper/version/acceptor'
 
+# Version represents a semantic version as defined by Semantic Versioning 2.0.0.
+# Semantic versions must include a normal version number (i.e. 1.0.0) and can
+# optionally include labels indicating pre-release version and/or build metadata.
+# Version can compare and bump segments of a semantic version.
+#
+# For more details on the specification, see: https://semver.org/.
 class Version
   include Comparable
 
   attr_reader :segments, :prerelease, :build
 
   def initialize(version)
+    # Acceptor ensures our input version is valid per the semver spec. See
+    # `Version::Acceptor` for details.
     unless Acceptor.new(version).valid?
       raise ArgumentError.new("Invalid version: #{version}")
     end
@@ -19,18 +27,27 @@ class Version
     @segments.push(0) until @segments.size == 3
   end
 
+  # bump_major increments the major version. (e.g. 1.0.0 -> 2.0.0)
   def bump_major
     bump(0)
   end
 
+  # bump_minor increments the minor version. (e.g. 1.0.0 -> 1.1.0)
   def bump_minor
     bump(1)
   end
 
+  # bump_patch increments the patch version. (e.g. 1.0.0 -> 1.0.1)
   def bump_patch
     bump(2)
   end
 
+  # bump_prerelease increments the prerelease version. (e.g. 1.0.0-alpha.0 -> 1.0.0-alpha.1)
+  # There's no specification for how prerelease tokens are structured beyond dot-separated
+  # identifiers that might be numeric and might not be. The approach taken here is to siphon
+  # off any digit characters at the end of the token, increment it as an integer, and
+  # reassemble the string. Calling this without a prerelease set or with a token without
+  # trailing digits (e.g. -alpha.beta) will raise an `ArgumentError`.
   def bump_prerelease
     if !prerelease?
       raise ArgumentError.new('No prerelease present to bump')
@@ -95,8 +112,14 @@ class Version
 
   protected
 
+  # These writers allow an instance to create a new instance with different data.
+  # This pattern is used to ensure objects themselves are immutable but return new
+  # instances when a mutation is made (e.g. bump_*).
   attr_writer :segments, :prerelease, :build
 
+  # protected methods in ruby are only callable by the object itself, and objects
+  # of the same class. This is only used by the equality and comparison operators
+  # and thus is marked protected.
   def version
     version = segments.join('.')
     version = [version, prerelease].compact.join('-')
@@ -106,6 +129,10 @@ class Version
 
   private
 
+  # bump is used by the public methods to increment a specific segment of the normal
+  # version. It expects to be called with 0, 1, or 2 relating to the major, minor, and
+  # patch segments respectively. The initializer enforces that we have exactly three
+  # segments.
   def bump(segment)
     next_segments = segments.dup.tap do |segments|
       segments[segment] += 1
@@ -114,6 +141,11 @@ class Version
     return new(next_segments, prerelease)
   end
 
+  # This is a private construction method called in the bump methods. Object#allocate
+  # creates a new instance without running the initializer which allows an instance to
+  # assemble another instance with derived data without processing a version string. THis
+  # method doesn't pass along build information as builds are only germaine to a single
+  # instance of a Version and not incrementable or transferrable.
   def new(segments, prerelease)
     self.class.allocate.tap do |version|
       version.segments = segments

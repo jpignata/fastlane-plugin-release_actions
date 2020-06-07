@@ -2,7 +2,13 @@ require 'strscan'
 require 'helper/commit/commit'
 
 # Parser is a Conventional Commits 1.0.0 compliant parser that turns commit
-# messages into structured data. For more details on the specification, see
+# messages into structured data. It uses StringScanner from the stdlib to 
+# search through commit messages for tokens and extracts the type, scope,
+# subject, body, and footer from a commit message. If the parser finds a 
+# commit that isn't written as a Conventional Commmit, it will default to
+# the type "change" and extract the subject and body.
+# 
+# For more details on the specification, see
 # https://www.conventionalcommits.org/en/v1.0.0/#specification.
 class Parser
   # Commit messages can contain metadata in a footer that include a key and a value.
@@ -37,7 +43,7 @@ class Parser
     commit.type = :change
 
     # Match the tokens that compromise the metadata prefixing the subject. This
-    # must include a type such a feat or fix, and can optionally include a scope 
+    # must include a type such feat or fix, and can optionally include a scope
     # and a bang (!) to indicate a breaking change. Examples:
     #
     # - "fix: "

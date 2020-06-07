@@ -78,7 +78,7 @@ describe Version do
     end
 
     example 'prerelease versions are compared according to the spec rules' do
-      # See https://semver.org/#spec-item-11 is curious.
+      # This is the test case outlined in https://semver.org/#spec-item-11.
 
       expect(Version.new('1.0.0')).to be > Version.new('1.0.0-rc.1')
       expect(Version.new('1.0.0-rc.1')).to be > Version.new('1.0.0-beta.11')

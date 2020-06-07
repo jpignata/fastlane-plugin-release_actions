@@ -1,3 +1,9 @@
+# Footer provides case insensitive access to a hash. The Conventional Commits spec designates
+# footer tokens are to be treated case insensitively. Rather than doing a linear search of
+# the key space each time, this object uses additional space to store a mapping of lowercase
+# keys to their originally styled version. Lookups are done using the key hash, which then
+# returns another key which is used to return the attribute. When enumerated, Footer will
+# return the original key found in the footer.
 class Footer
   include Enumerable
 

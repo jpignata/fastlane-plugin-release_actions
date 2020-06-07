@@ -29,11 +29,21 @@ class Version
   end
 
   # Acceptor is a deterministic finite automaton (DFA) that validates strings as
-  # semantic versions. The DFA has transitions between the states defined in
-  # STATES as it iterates through the characters of the input string. If it
+  # semantic versions. A DFA is a graph where the vertices are states (e.g. major,
+  # minor, etc.) and the edges are transitions (e.g. start -> major). The DFA moves
+  # between states using the transitions defined in the STATES constant as it processes
+  # the characters of the input string. Certain states are designated as accepting,
+  # meaning the state is a valid endpoint for the grammar being parsed. If the DFA
   # terminates in an accepting state, the string is valid and it accepts the
-  # input. This is compliant with Semantic Versioning 2.0.0. For more details
-  # on the specification, see: https://semver.org/.
+  # input. If the DFA cannot make a transition, finds an invalid character, or
+  # terminates in a non-accepting state, the string is not valid. A simplified diagram
+  # of the state machine can be found in this repo in
+  # `docs/version-acceptor-dfa.{png,svg}` (drawn using http://madebyevan.com/fsm/).
+  # While there's some complexity in maintaining the table of edges, it provides O(N)
+  # runtime and significant maintainability benefits over regular expressions.
+  #
+  # Acceptor is compliant with Semantic Versioning 2.0.0. For more details on the
+  # specification, see: https://semver.org/.
   #
   # ==== Examples
   #
@@ -41,7 +51,7 @@ class Version
   #   Version::Acceptor.new('1.0.0-unstable.0').valid?  # => true
   #   Version::Acceptor.new('1.0-alpha+234')            # => true
   #   Version::Acceptor.new('1.0.PRO).valid?            # => false
-  #   Version::Acceptor.new('alfonso romeo).valid?      # => false
+  #   Version::Acceptor.new('tetris').valid?            # => false
   class Acceptor
     STATES = {
       :start => {
