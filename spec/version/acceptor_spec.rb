@@ -38,7 +38,8 @@ describe Version::Acceptor do
       ['1.0.0.0', false],
       ['0.0.0.0', false],
       ['1.0.%', false],
-      ['1.0.0p', false]
+      ['1.0.0p', false],
+      ['1.0318.2', false]
     ]
 
     # Instead of writing individual expectations, this method generates tests dynamically from

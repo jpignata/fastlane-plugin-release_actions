@@ -12,17 +12,17 @@ class Version
 
     def self.for(character)
       case character
-      when ("1".."9")
+      when ('1'..'9')
         Symbol::POSITIVE_INTEGER
-      when "0"
+      when '0'
         Symbol::ZERO
-      when ("A".."Z"), ("a".."z")
+      when ('A'..'Z'), ('a'..'z')
         Symbol::LETTER
-      when "."
+      when '.'
         Symbol::DOT
-      when "-"
+      when '-'
         Symbol::DASH
-      when "+"
+      when '+'
         Symbol::PLUS
       else
         Symbol::UNKNOWN
@@ -51,7 +51,8 @@ class Version
   #
   #   Version::Acceptor.new('1.0.0').valid?            # => true
   #   Version::Acceptor.new('1.0.0-unstable.0').valid? # => true
-  #   Version::Acceptor.new('1.0-alpha+234')           # => true
+  #   Version::Acceptor.new('1.0-alpha+234').valid?    # => true
+  #   Version::Acceptor.new('1.0318.2').valid?         # => false
   #   Version::Acceptor.new('1.0.PRO).valid?           # => false
   #   Version::Acceptor.new('tetris').valid?           # => false
   class Acceptor
