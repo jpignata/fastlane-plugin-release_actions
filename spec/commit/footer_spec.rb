@@ -14,21 +14,23 @@ describe Footer do
   describe 'key access' do
     KEY = 'key'
 
-    KEYS = (1 << KEY.length).times.map do |i|
-      KEY.each_char.map.with_index { |char, j|          
+    KEYS = Array.new(1 << KEY.length) do |i|
+      chars = KEY.each_char.map.with_index do |char, j|
         if i & (1 << j) > 0
           char.upcase
         else
           char
         end
-      }.join
+      end
+
+      chars.join
     end
 
     it 'is case insensitive' do
       footer[KEY] = 'value'
 
       KEYS.each do |key|
-        expect(footer[key]).to eq('value') 
+        expect(footer[key]).to eq('value')
       end
     end
   end

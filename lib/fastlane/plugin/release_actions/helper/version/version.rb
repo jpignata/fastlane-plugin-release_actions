@@ -15,7 +15,7 @@ class Version
     # Acceptor ensures our input version is valid per the semver spec. See
     # `Version::Acceptor` for details.
     unless Acceptor.new(version).valid?
-      raise ArgumentError.new("Invalid version: #{version}")
+      raise ArgumentError, "Invalid version: #{version}"
     end
 
     parts = version.split(/[-\+]/)
@@ -50,9 +50,9 @@ class Version
   # trailing digits (e.g. -alpha.beta) will raise an `ArgumentError`.
   def bump_prerelease
     if !prerelease?
-      raise ArgumentError.new('No prerelease present to bump')
+      raise ArgumentError, 'No prerelease present to bump'
     elsif !prerelease[-1].between?("0", "9")
-      raise ArgumentError.new('prerelease does not end with an integer')
+      raise ArgumentError, 'prerelease does not end with an integer'
     end
 
     integer = @prerelease.slice(/\d+$/)
@@ -137,7 +137,7 @@ class Version
     next_segments = segments.dup.tap do |segments|
       segments[segment] += 1
     end
-    
+
     return new(next_segments, prerelease)
   end
 

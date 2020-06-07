@@ -22,7 +22,7 @@ def new_commit(type)
 end
 
 def new_commits(commits)
-  Commits.new.tap do |_commits|
-    commits.each { |commit| _commits.push(commit) }
+  Commits.new.tap do |c|
+    commits.each { |commit| c.push(commit) }
   end
 end

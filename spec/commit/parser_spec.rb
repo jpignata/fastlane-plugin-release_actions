@@ -34,11 +34,11 @@ describe Parser do
 
   context 'a multi-line commit message with breaking changes' do
     let(:msg) do
-      <<~EOF
+      <<~TEXT
         feat: completely refactor the API
 
         BREAKING CHANGE: The old API won't work, sry.
-      EOF
+      TEXT
     end
 
     example { expect(commit.type).to eq(:feat) }

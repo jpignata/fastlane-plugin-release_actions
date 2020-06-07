@@ -54,62 +54,62 @@ class Version
   #   Version::Acceptor.new('tetris').valid?            # => false
   class Acceptor
     STATES = {
-      :start => {
+      start: {
         Symbol::POSITIVE_INTEGER => :major,
-        Symbol::ZERO => :major_end,
+        Symbol::ZERO => :major_end
       },
-  
-      :major => {
+
+      major: {
         Symbol::POSITIVE_INTEGER => :major,
         Symbol::ZERO => :major,
         Symbol::DOT => :minor_start,
         Symbol::DASH => :prerelease,
         Symbol::PLUS => :build
       },
-  
-      :major_end => {
+
+      major_end: {
         Symbol::DOT => :minor_start,
         Symbol::DASH => :prerelease,
         Symbol::PLUS => :build
       },
-  
-      :minor_start => {
+
+      minor_start: {
         Symbol::POSITIVE_INTEGER => :minor,
         Symbol::ZERO => :minor_end
       },
-  
-      :minor => {
+
+      minor: {
         Symbol::POSITIVE_INTEGER => :minor,
         Symbol::ZERO => :minor,
         Symbol::DOT => :patch_start,
         Symbol::DASH => :prerelease,
         Symbol::PLUS => :build
       },
-  
-      :minor_end => {
+
+      minor_end: {
         Symbol::DOT => :patch_start,
         Symbol::DASH => :prerelease,
         Symbol::PLUS => :build
       },
-  
-      :patch_start => {
+
+      patch_start: {
         Symbol::POSITIVE_INTEGER => :patch,
         Symbol::ZERO => :patch_end
       },
-  
-      :patch => {
+
+      patch: {
         Symbol::POSITIVE_INTEGER => :patch,
         Symbol::ZERO => :patch,
         Symbol::DASH => :prerelease,
         Symbol::PLUS => :build
       },
-  
-      :patch_end => {
+
+      patch_end: {
         Symbol::DASH => :prerelease,
         Symbol::PLUS => :build
       },
-  
-      :prerelease => {
+
+      prerelease: {
         Symbol::POSITIVE_INTEGER => :prerelease,
         Symbol::ZERO => :prerelease,
         Symbol::LETTER => :prerelease,
@@ -117,30 +117,30 @@ class Version
         Symbol::PLUS => :build
       },
 
-      :prerelease_new_identifier => {
+      prerelease_new_identifier: {
         Symbol::POSITIVE_INTEGER => :prerelease,
         Symbol::ZERO => :prerelease,
         Symbol::LETTER => :prerelease
       },
 
-      :build => {
+      build: {
         Symbol::POSITIVE_INTEGER => :build,
         Symbol::ZERO => :build,
         Symbol::LETTER => :build,
         Symbol::DOT => :build_new_identifier
       },
 
-      :build_new_identifier => {
+      build_new_identifier: {
         Symbol::POSITIVE_INTEGER => :build,
         Symbol::ZERO => :build,
         Symbol::LETTER => :build
       }
     }
-  
+
     ACCEPTING = [:major, :minor, :patch, :major_end, :minor_end, :patch_end, :prerelease, :build]
-  
+
     def initialize(candidate)
-      if !candidate.respond_to?(:each_char)
+      unless candidate.respond_to?(:each_char)
         raise ArgumentError, "Invalid argument: #{candidate}"
       end
 

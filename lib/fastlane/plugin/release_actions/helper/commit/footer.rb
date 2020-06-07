@@ -22,7 +22,7 @@ class Footer
   end
 
   def [](key)
-    if has_key?(key)
+    if key?(key)
       attributes[keys[key.downcase]]
     end
   end
@@ -35,9 +35,11 @@ class Footer
     keys.empty?
   end
 
-  def has_key?(key)
+  def key?(key)
     keys.key?(key.downcase)
   end
+
+  alias has_key? key?
 
   private
 
