@@ -1,4 +1,6 @@
 module Changelog
+  # Helper is an object holding convenience methods for usage in blocks passed to
+  # the node builds to decorate pieces of text with Markdown syntax.
   class Helper
     def link(url, label)
       "[#{label}](#{url})"

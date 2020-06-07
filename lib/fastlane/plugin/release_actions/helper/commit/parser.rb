@@ -11,8 +11,9 @@ require 'helper/commit/commit'
 # For more details on the specification, see
 # https://www.conventionalcommits.org/en/v1.0.0/#specification.
 class Parser
-  # Commit messages can contain metadata in a footer that include a key and a value.
-  # The key is in one of three forms:
+  # FOOTER_KEY is a pattern that matches a footer element of a Conventional
+  # Commit. In the spec, commit messages can contain metadata in a footer that
+  # are defined by a key and a value. The key is in one of three legal forms:
   #
   # - "key: "
   # - "key #"

@@ -1,4 +1,6 @@
 class Version
+  # Symbol holds details about the alphabet recognized by the Acceptor. It translates
+  # characters into the an enumeration value for use in determining the right transition.
   module Symbol
     POSITIVE_INTEGER = 0
     ZERO = 1
