@@ -41,6 +41,12 @@ describe Version::Acceptor do
       ['1.0.0p', false]
     ]
 
+    # Instead of writing individual expectations, this method generates tests dynamically from
+    # a table. The table includes an input string, an expected validity result, and an optional
+    # label for specdoc output.
+    #
+    # This method is popular in the Go community, and is applicable here given the number of
+    # combinations to test. To learn more, see: https://dave.cheney.net/2019/05/07/prefer-table-driven-tests
     TABLE.each do |candidate, valid, display|
       context(display || candidate) do
         example do
