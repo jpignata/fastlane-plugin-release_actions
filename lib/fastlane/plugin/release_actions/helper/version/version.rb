@@ -23,8 +23,6 @@ class Version
     @segments = parts[0].split('.').map(&:to_i)
     @prerelease = parts[1] if version.include?('-')
     @build = parts[-1] if version.include?('+')
-
-    @segments.push(0) until @segments.size == 3
   end
 
   # bump_major increments the major version. (e.g. 1.0.0 -> 2.0.0)
@@ -131,14 +129,13 @@ class Version
 
   # bump is used by the public methods to increment a specific segment of the normal
   # version. It expects to be called with 0, 1, or 2 relating to the major, minor, and
-  # patch segments respectively. The initializer enforces that we have exactly three
-  # segments.
+  # patch segments respectively. Prerelease and build metadata is not retained.
   def bump(segment)
     next_segments = segments.dup.tap do |segments|
       segments[segment] += 1
     end
 
-    return new(next_segments, prerelease)
+    return new(next_segments)
   end
 
   # This is a private construction method called in the bump methods. Object#allocate
@@ -146,7 +143,7 @@ class Version
   # assemble another instance with derived data without processing a version string. THis
   # method doesn't pass along build information as builds are only germaine to a single
   # instance of a Version and not incrementable or transferrable.
-  def new(segments, prerelease)
+  def new(segments, prerelease = nil)
     self.class.allocate.tap do |version|
       version.segments = segments
       version.prerelease = prerelease

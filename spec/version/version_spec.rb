@@ -4,7 +4,6 @@ require 'helper/version/version'
 describe Version do
   it 'is instantiated with a version string' do
     expect(Version.new('1.0.0').segments).to eq([1, 0, 0])
-    expect(Version.new('0').segments).to eq([0, 0, 0])
   end
 
   context 'with an invalid version string' do
@@ -51,9 +50,9 @@ describe Version do
 
   describe 'Comparable' do
     it 'sorts based upon semver' do
-      preview = Version.new('0.10')
-      one_dot_oh = Version.new('1.0')
-      two_dot_oh = Version.new('2.0')
+      preview = Version.new('0.10.0')
+      one_dot_oh = Version.new('1.0.0')
+      two_dot_oh = Version.new('2.0.0')
 
       expect([two_dot_oh, preview, one_dot_oh].sort).to eq([preview, one_dot_oh, two_dot_oh])
       expect(one_dot_oh).to be > preview
@@ -71,8 +70,8 @@ describe Version do
     end
 
     example 'prerelease versions have a lower precendence' do
-      one_dot_oh = Version.new('1.0')
-      rc = Version.new('1.0-rc')
+      one_dot_oh = Version.new('1.0.0')
+      rc = Version.new('1.0.0-rc')
 
       expect(one_dot_oh).to be > rc
     end

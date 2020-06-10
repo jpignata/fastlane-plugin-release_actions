@@ -56,6 +56,10 @@ class Version
   #   Version::Acceptor.new('1.0.PRO).valid?           # => false
   #   Version::Acceptor.new('tetris').valid?           # => false
   class Acceptor
+    ACCEPTING = [:patch, :patch_end, :prerelease, :build]
+
+    START = :start
+
     STATES = {
       start: {
         Symbol::POSITIVE_INTEGER => :major,
@@ -65,15 +69,11 @@ class Version
       major: {
         Symbol::POSITIVE_INTEGER => :major,
         Symbol::ZERO => :major,
-        Symbol::DOT => :minor_start,
-        Symbol::DASH => :prerelease,
-        Symbol::PLUS => :build
+        Symbol::DOT => :minor_start
       },
 
       major_end: {
-        Symbol::DOT => :minor_start,
-        Symbol::DASH => :prerelease,
-        Symbol::PLUS => :build
+        Symbol::DOT => :minor_start
       },
 
       minor_start: {
@@ -84,15 +84,11 @@ class Version
       minor: {
         Symbol::POSITIVE_INTEGER => :minor,
         Symbol::ZERO => :minor,
-        Symbol::DOT => :patch_start,
-        Symbol::DASH => :prerelease,
-        Symbol::PLUS => :build
+        Symbol::DOT => :patch_start
       },
 
       minor_end: {
-        Symbol::DOT => :patch_start,
-        Symbol::DASH => :prerelease,
-        Symbol::PLUS => :build
+        Symbol::DOT => :patch_start
       },
 
       patch_start: {
@@ -140,10 +136,8 @@ class Version
       }
     }
 
-    ACCEPTING = [:major, :minor, :patch, :major_end, :minor_end, :patch_end, :prerelease, :build]
-
     def initialize(candidate)
-      unless candidate.respond_to?(:each_char)
+      unless candidate.respond_to?(:chars)
         raise ArgumentError, "Invalid argument: #{candidate}"
       end
 
@@ -151,13 +145,12 @@ class Version
     end
 
     def valid?
-      state = :start
-      symbols = candidate.each_char.map { |character| Symbol.for(character) }
+      state = START
 
-      return false if symbols.include?(Symbol::UNKNOWN)
+      candidate.chars.each do |character|
+        symbol = Symbol.for(character)
 
-      symbols.each do |symbol|
-        if STATES[state][symbol]
+        if STATES[state].key?(symbol)
           state = STATES[state][symbol]
         else
           return false
