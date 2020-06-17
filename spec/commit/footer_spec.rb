@@ -1,8 +1,8 @@
 require 'spec_helper'
 require 'helper/commit/footer'
 
-describe Footer do
-  let(:footer) { Footer.new }
+describe Commit::Footer do
+  let(:footer) { Commit::Footer.new }
 
   it 'is enumerable' do
     footer['key1'] = 1
