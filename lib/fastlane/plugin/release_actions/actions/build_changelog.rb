@@ -25,7 +25,7 @@ module Fastlane
           changelog.unordered_list { fixes.map(&:subject) }
         end
 
-        changelog.render
+        changelog
       end
 
       def self.description
