@@ -19,7 +19,20 @@ module Fastlane
       end
 
       def self.available_options
-        []
+        [
+          FastlaneCore::ConfigItem.new(
+            key: :changelog,
+            description: 'Output of build_changelog action',
+            optional: false,
+            type: Changelog::Document
+          ),
+          FastlaneCore::ConfigItem.new(
+            key: :path,
+            description: 'Path to the changelog file for the project',
+            optional: false,
+            type: String
+          )
+        ]
       end
 
       def self.is_supported?(platform)
