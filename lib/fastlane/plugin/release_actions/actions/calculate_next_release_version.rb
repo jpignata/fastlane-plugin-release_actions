@@ -17,7 +17,7 @@ module Fastlane
           UI.crash!('No commits found since last release')
         end
 
-        [bump_version(version, commits), commits]
+        [bump_version(version, commits).to_s, commits]
       end
 
       def self.bump_version(version, commits)
