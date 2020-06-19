@@ -1,4 +1,4 @@
-require 'helper/version/acceptor'
+require_relative 'acceptor'
 
 # Version represents a semantic version as defined by Semantic Versioning 2.0.0.
 # Semantic versions must include a normal version number (i.e. 1.0.0) and can
@@ -26,17 +26,17 @@ class Version
   end
 
   # bump_major increments the major version. (e.g. 1.0.0 -> 2.0.0)
-  def bump_major
+  def bump_major!
     bump(0)
   end
 
   # bump_minor increments the minor version. (e.g. 1.0.0 -> 1.1.0)
-  def bump_minor
+  def bump_minor!
     bump(1)
   end
 
   # bump_patch increments the patch version. (e.g. 1.0.0 -> 1.0.1)
-  def bump_patch
+  def bump_patch!
     bump(2)
   end
 
@@ -46,7 +46,7 @@ class Version
   # off any digit characters at the end of the token, increment it as an integer, and
   # reassemble the string. Calling this without a prerelease set or with a token without
   # trailing digits (e.g. -alpha.beta) will raise an `ArgumentError`.
-  def bump_prerelease
+  def bump_prerelease!
     if !prerelease?
       raise ArgumentError, 'No prerelease present to bump'
     elsif !prerelease[-1].between?("0", "9")
@@ -57,6 +57,10 @@ class Version
     next_prerelease = @prerelease.delete_suffix(integer) + integer.next
 
     new(segments, next_prerelease)
+  end
+
+  def prerelease!(token)
+    new(segments, token + '.0')
   end
 
   def prerelease?

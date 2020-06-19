@@ -3,8 +3,8 @@ require 'helper/commit/parser'
 require 'helper/commit/commit'
 require 'helper/commit/commits'
 
-describe Parser do
-  let(:parser) { Parser.new(msg) }
+describe Commit::Parser do
+  let(:parser) { Commit::Parser.new(msg) }
   let(:commit) { parser.commit }
 
   before { parser.parse }
