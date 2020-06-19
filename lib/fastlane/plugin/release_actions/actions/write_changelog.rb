@@ -22,7 +22,7 @@ module Fastlane
         [
           FastlaneCore::ConfigItem.new(
             key: :changelog,
-            description: 'Output of build_changelog action',
+            description: 'The changelog document to write',
             optional: false,
             type: Changelog::Document
           ),
