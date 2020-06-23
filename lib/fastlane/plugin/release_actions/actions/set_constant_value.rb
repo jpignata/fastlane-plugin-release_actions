@@ -2,25 +2,25 @@ module Fastlane
   module Actions
     class SetConstantValueAction < Action
       def self.run(params)
-        podspec = params[:podspec]
+        file = params[:file]
         constant = params[:constant]
         value = params[:value]
         
-        podspec_contents = File.read(podspec)
+        file_contents = File.read(file)
 
         CONSTANT_VERSION = /(?<=#{constant})(\s*=\s*["'].*)/
   
-        if !podspec_contents.match(CONSTANT_VERSION)
-          UI.error("#{constant} not present or doesn't have an explicit value in #{podspec}")
+        if !file_contents.match(CONSTANT_VERSION)
+          UI.error("#{constant} not present or doesn't have an explicit value in #{file}")
           return
         end
 
         new_value = " = '#{value}'"
         
-        podspec_new_contents = podspec_contents.gsub(CONSTANT_VERSION, new_value)
+        file_contents = file_contents.gsub(CONSTANT_VERSION, new_value)
 
-        File.open(podspec, "w") { |file| file.puts podspec_new_contents }
-        UI.success("Successfully modified #{constant} to value #{value} in #{podspec}")
+        File.open(file, "w") { |file| file.puts file_contents }
+        UI.success("Successfully modified #{constant} to value #{value} in #{file}")
       end
 
       #####################################################
@@ -34,8 +34,8 @@ module Fastlane
       def self.available_options
         [
             FastlaneCore::ConfigItem.new(
-                key: :podspec,
-                env_name: 'PODSPEC_PATH',
+                key: :file,
+                env_name: 'FILE_PATH',
                 description: 'The path of the file you wish to modify',
                 optional: false,
                 type: String
