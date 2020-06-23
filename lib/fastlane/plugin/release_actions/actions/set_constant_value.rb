@@ -22,10 +22,6 @@ module Fastlane
         UI.success("Successfully modified #{constant} to value #{value} in #{file}")
       end
 
-      #####################################################
-      # @!group Documentation
-      #####################################################
-
       def self.description
         'This action will modify the value of the passed in constant'
       end
