@@ -3,23 +3,23 @@ module Fastlane
     class SetConstantValueAction < Action
       def self.run(params)
         file = params[:file]
-        constant = params[:constant]
+        key = params[:key]
         value = params[:value]
 
-        regex_constant_version = /(?<=#{constant})(\s*=\s*["'].*)/
+        regex_key = /(?<=#{key})(\s*=\s*["'].*)/
         file_contents = File.read(file)
 
-        unless file_contents.match(regex_constant_version)
+        unless file_contents.match(regex_key)
           UI.error("#{constant} not present or doesn't have an explicit value in #{file}")
           return
         end
 
         new_value = " = '#{value}'"
 
-        file_contents = file_contents.gsub(regex_constant_version, new_value)
+        file_contents = file_contents.gsub(regex_key, new_value)
 
         File.open(file, "w") { |f| f.puts(file_contents) }
-        UI.success("Successfully modified #{constant} to value #{value} in #{file}")
+        UI.success("Successfully modified #{key} to value #{value} in #{file}")
       end
 
       def self.description
@@ -36,9 +36,9 @@ module Fastlane
             type: String
           ),
           FastlaneCore::ConfigItem.new(
-            key: :constant,
-            env_name: 'CONSTANT_NAME',
-            description: 'The constant you wish to modify',
+            key: :key,
+            env_name: 'KEY_NAME',
+            description: 'The key of the value you wish to modify',
             optional: false,
             type: String
           ),
