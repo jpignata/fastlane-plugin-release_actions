@@ -1,6 +1,6 @@
 module Fastlane
   module Actions
-    class SetConstantValueAction < Action
+    class SetKeyValueAction < Action
       def self.run(params)
         file = params[:file]
         key = params[:key]
@@ -10,7 +10,7 @@ module Fastlane
         file_contents = File.read(file)
 
         unless file_contents.match(regex_key)
-          UI.error("#{constant} not present or doesn't have an explicit value in #{file}")
+          UI.error("#{key} not present or doesn't have an explicit value in #{file}")
           return
         end
 
@@ -23,7 +23,7 @@ module Fastlane
       end
 
       def self.description
-        'This action will modify the value of the passed in constant'
+        'This action will modify the value of the passed in key'
       end
 
       def self.available_options
@@ -44,8 +44,8 @@ module Fastlane
           ),
           FastlaneCore::ConfigItem.new(
             key: :value,
-            env_name: 'CONSTANT_VALUE',
-            description: 'The new value to assign to the constant',
+            env_name: 'KEY_VALUE',
+            description: 'The new value to assign to the key',
             optional: false,
             type: String
           )
